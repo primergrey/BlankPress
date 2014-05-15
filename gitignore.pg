@@ -1,0 +1,5 @@
+./lib
+wp-config.php
+*.sublime-project
+*.sublime-workspace
+.DS_STORE
