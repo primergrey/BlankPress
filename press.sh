@@ -13,7 +13,6 @@ function death() {
 {
     echo "Setting up core symlink..."
     ln -s ../GreyPress lib > /dev/null 2>&1
-    # echo "Core symlink successfully setup."
 } || {
     printf "\e[1m\e[31mERROR:\e[m Failed to create symlink to core WordPress files (GreyPress)"
     echo
@@ -34,6 +33,33 @@ echo "Core symlink setup successfully."
 }
 
 echo "Core symlink setup successfully."
+
+# Customize theme information
+
+printf "Client name -> "
+read CLIENTNAME
+printf "Theme directory name (all lowercase, no spaces) -> "
+read THEMENAME
+
+{
+    echo "Setting theme information..."
+    perl -pi -e "s/%%CLIENT%%/$CLIENTNAME/g;" ./wp-content/themes/blankpress/style.css
+} || {
+    printf "\e[1m\e[31mERROR:\e[m Failed to properly set theme information."
+    echo
+    death
+}
+
+{
+    echo "Setting theme directory..."
+    mv ./wp-content/themes/blankpress ./wp-content/themes/$THEMENAME
+} || {
+    printf "\e[1m\e[31mERROR:\e[m Failed to properly set theme directory."
+    echo
+    death
+}
+
+echo "Theme setup successfully."
 
 printf "\e[1m\e[32mSuccessfully built BlankPress!\e[m"
 echo
